@@ -14,4 +14,21 @@ canvas {
 
 button {
     margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:disabled {
+    background-color: #ddd;
+    color: #666;
+    cursor: not-allowed;
+}
+
+#enableWebcam, #disableWebcam {
+    margin-right: 10px;
 }

@@ -2,6 +2,51 @@ const imageInput = document.getElementById('imageInput');
 const outputCanvas = document.getElementById('outputCanvas');
 const asciiArtContainer = document.getElementById('asciiArtContainer');
 const convertButton = document.getElementById('convertButton');
+const enableWebcamButton = document.getElementById('enableWebcam');
+const disableWebcamButton = document.getElementById('disableWebcam'); // New button
+
+let webcamStream;
+let webcamEnabled = false;
+
+// Event listener for enabling webcam
+enableWebcamButton.addEventListener('click', async () => {
+    try {
+        webcamStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        webcamEnabled = true;
+        disableWebcamButton.disabled = false; // Enable the "Disable Webcam" button
+
+        const video = document.createElement('video');
+        video.srcObject = webcamStream;
+        video.play();
+
+        const webcamCanvas = document.createElement('canvas');
+        document.body.appendChild(webcamCanvas);
+        const webcamCtx = webcamCanvas.getContext('2d');
+
+        function updateWebcam() {
+            if (webcamEnabled) {
+                webcamCanvas.width = outputCanvas.width;
+                webcamCanvas.height = outputCanvas.height;
+                webcamCtx.drawImage(video, 0, 0, outputCanvas.width, outputCanvas.height);
+                const imageData = webcamCtx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+
+                asciiArtContainer.textContent = convertImageDataToASCII(imageData);
+
+                requestAnimationFrame(updateWebcam);
+            }
+        }
+
+        updateWebcam();
+    } catch (error) {
+        console.error('Error accessing webcam:', error);
+        alert('Error accessing webcam. Please make sure it is properly connected and accessible.');
+    }
+});
+
+disableWebcamButton.addEventListener('click', () => {
+    webcamEnabled = false;
+    disableWebcamButton.disabled = true;
+});
 
 convertButton.addEventListener('click', () => {
     const file = imageInput.files[0];
