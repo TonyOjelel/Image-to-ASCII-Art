@@ -5,6 +5,8 @@ const convertButton = document.getElementById('convertButton');
 
 convertButton.addEventListener('click', () => {
     const file = imageInput.files[0];
+    const desiredWidth = parseInt(document.getElementById('outputWidth').value, 10);
+
     if (file) {
         if (file.type.startsWith('image')) {
             const img = new Image();
@@ -13,13 +15,14 @@ convertButton.addEventListener('click', () => {
             reader.onload = function (e) {
                 img.src = e.target.result;
                 img.onload = function () {
-                    outputCanvas.width = img.width;
-                    outputCanvas.height = img.height;
-                    const ctx = outputCanvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, img.width, img.height);
-                    const imageData = ctx.getImageData(0, 0, img.width, img.height);
+                    const aspectRatio = img.width / img.height;
+                    const newHeight = Math.round(desiredWidth / aspectRatio);
 
-                    // Process imageData to ASCII art here (you can use a library or write your own algorithm).
+                    outputCanvas.width = desiredWidth;
+                    outputCanvas.height = newHeight;
+                    const ctx = outputCanvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, desiredWidth, newHeight);
+                    const imageData = ctx.getImageData(0, 0, desiredWidth, newHeight);
 
                     asciiArtContainer.textContent = convertImageDataToASCII(imageData);
                 };
@@ -27,15 +30,13 @@ convertButton.addEventListener('click', () => {
 
             reader.readAsDataURL(file);
         } else if (file.type === 'image/gif') {
-            // Handle GIF conversion using gif.js library
-            // You'll need to implement the GIF processing logic here.
+            //Todo: ADD GIF LOGIC
         } else {
             alert('Unsupported file format. Please upload an image or GIF.');
         }
     }
 });
 
-// You need to implement the function convertImageDataToASCII to convert imageData to ASCII art.
 function convertImageDataToASCII(imageData) {
     const { data, width, height } = imageData;
     const asciiChars = ['@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.'];
@@ -47,13 +48,13 @@ function convertImageDataToASCII(imageData) {
         const b = data[i + 2];
         const brightness = (r + g + b) / 3;
 
-        // Map brightness to ASCII characters
+        
         const asciiIndex = Math.floor((brightness / 255) * (asciiChars.length - 1));
         const asciiChar = asciiChars[asciiIndex];
 
         asciiArt += asciiChar;
 
-        // Add line breaks at the end of each row
+        
         if ((i / 4 + 1) % width === 0) {
             asciiArt += '\n';
         }
@@ -61,4 +62,3 @@ function convertImageDataToASCII(imageData) {
 
     return asciiArt;
 }
-
