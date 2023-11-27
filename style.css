@@ -4,7 +4,7 @@ body {
 }
 
 canvas {
-    display: none;
+  display:none;
 }
 
 #asciiArtContainer {

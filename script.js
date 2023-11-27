@@ -3,17 +3,17 @@ const outputCanvas = document.getElementById('outputCanvas');
 const asciiArtContainer = document.getElementById('asciiArtContainer');
 const convertButton = document.getElementById('convertButton');
 const enableWebcamButton = document.getElementById('enableWebcam');
-const disableWebcamButton = document.getElementById('disableWebcam'); // New button
+const disableWebcamButton = document.getElementById('disableWebcam'); 
 
 let webcamStream;
 let webcamEnabled = false;
 
-// Event listener for enabling webcam
+
 enableWebcamButton.addEventListener('click', async () => {
     try {
         webcamStream = await navigator.mediaDevices.getUserMedia({ video: true });
         webcamEnabled = true;
-        disableWebcamButton.disabled = false; // Enable the "Disable Webcam" button
+        disableWebcamButton.disabled = false; 
 
         const video = document.createElement('video');
         video.srcObject = webcamStream;

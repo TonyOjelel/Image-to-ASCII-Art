@@ -7,11 +7,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <button onclick="location.href='https://image-to-ascii-art-1.willverrinder.repl.co'" type="button">
+     Version 2</button>
     <h1>Image to ASCII Art Converter</h1>
+    <p>Version 1 generates an image out of typical ASCII characters on a typical keyboard</p>
     <label for="imageInput">Select an Image or GIF:</label>
     <input type="file" id="imageInput" accept="image/*, .gif">
-    <label for="outputWidth">Desired Width for ASCII Art:</label>
-    <input type="number" id="outputWidth" value="100" min="1" step="1">
+    <label for="outputWidth">Desired Width for ASCII Art (max 1000):</label>
+    <input type="number" id="outputWidth" value="100" min="1" max = "1000"step="1">
     <canvas id="outputCanvas" width="400" height="300"></canvas>
     <button id="convertButton">Convert to ASCII Art</button>
     <button id="enableWebcam">Enable Webcam</button>
